@@ -15,9 +15,9 @@ const TestBack = () => {
         return true;
       });
 
-    //   return () => {
-    //     router.beforePopState(() => true);
-    //   };
+      return () => {
+        router.beforePopState(() => true);
+      };
     }, [router]); 
 
     return (

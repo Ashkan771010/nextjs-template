@@ -7,13 +7,13 @@ import Link from "next/link";
 export default function Home() {
   const router = useRouter();
 
-  useEffect(() => {
-    if (router.asPath === "/") {
-      window.onpopstate = () => {
-        history.go(1);
-      };
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   if (router.asPath === "/") {
+  //     window.onpopstate = () => {
+  //       history.go(1);
+  //     };
+  //   }
+  // }, [router]);
 
   return (
     <div>
@@ -30,7 +30,7 @@ export default function Home() {
       <input placeholder="number / tel" type="number" inputMode="tel" />
 
       <input placeholder="tel" type="tel" />
-      <Link href="/identity">اطلاعات کاربر</Link>
+      <Link href="/identity"> 22اطلاعات کاربر</Link>
     </div>
   );
 }
