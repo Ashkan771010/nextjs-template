@@ -1,4 +1,3 @@
-import { SpinnerWrapper } from "../../../components/shared/ProductCard/style";
 import Spinner from "../../../components/shared/Spinner";
 import React, { useContext } from "react";
 
@@ -36,9 +35,7 @@ const ButtonRoot: React.FC<IProps> = props => {
       isLoading={isLoading}
     >
       {isLoading ? (
-        <SpinnerWrapper>
           <Spinner size={40} isWhite={true}/>
-        </SpinnerWrapper>
       ) : (
         <ButtonLabel>{children}</ButtonLabel>
       )}

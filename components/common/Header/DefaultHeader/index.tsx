@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 
-import BottomSheetRoot from "../../../../components/shared/BottomSheet";
 
 import { Col, Row, Typography } from "../../../../theme/ui-components";
 
@@ -14,11 +13,8 @@ import {
   ImageWrapper,
   NavIconWrapper,
   Button,
-  PurchaseBottomSheetBody,
-  UnderstoodButton,
 } from "./style";
 import CustomLinkWrapper from "../../../../components/shared/CustomLinkWrapper";
-import { SpinnerWrapper } from "../../../../components/shared/ProductCard/style";
 import Spinner from "../../../../components/shared/Spinner";
 
 const DefaultHeaderRoot: React.FC<any> = ({ hasInstallment, loanId }) => {
@@ -99,9 +95,7 @@ const DefaultHeaderRoot: React.FC<any> = ({ hasInstallment, loanId }) => {
               }
             >
               {isLoading ? (
-                <SpinnerWrapper>
                   <Spinner size={24}/>
-                </SpinnerWrapper>
               ) : (
                 <>
                   <Typography
@@ -123,33 +117,6 @@ const DefaultHeaderRoot: React.FC<any> = ({ hasInstallment, loanId }) => {
           </ActionArea>
         </Col>
       </Row>
-      <BottomSheetRoot
-        isOpen={isShowPurchaseRecords}
-        onClose={() => setIsShowPurchaseRecords(false)}
-        title="سوابق خرید"
-        hasCloseIcon
-      >
-        <PurchaseBottomSheetBody>
-          <Typography
-            variant="CaptionRegular"
-            color="gray"
-            className="no-record-text"
-          >
-            شما سابقه‌ی خریدی نداشته‌اید.
-          </Typography>
-          <Image
-            src="/images/services/VPN-Error.svg"
-            alt="Error"
-            width={120}
-            height={120}
-          />
-          <UnderstoodButton onClick={() => setIsShowPurchaseRecords(false)}>
-            <Typography variant="LargeTitleBold" color="gray">
-              متوجه شدم
-            </Typography>
-          </UnderstoodButton>
-        </PurchaseBottomSheetBody>
-      </BottomSheetRoot>
     </HeaderWrapper>
   );
 };

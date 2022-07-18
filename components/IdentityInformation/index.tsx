@@ -4,7 +4,6 @@ import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 
 
-import userInformationContext from "../../context/userInformation/userInformationContext";
 
 import {
   Button,
@@ -19,7 +18,6 @@ import {
   InputsWrapper,
 } from "./style";
 import { FormInput } from "../../components/FormInput";
-import { SpinnerWrapper } from "../../components/shared/ProductCard/style";
 import Spinner from "../../components/shared/Spinner";
 import persianToEnglishNumber from "../../utils/convert-persian-to-english-number";
 
@@ -54,7 +52,6 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
   const router = useRouter();
   const { guaranteeType = 0, simcardNumber } = router.query;
 
-  const { setUserInformation } = useContext<any>(userInformationContext);
 
   const textAreaLabelRef = useRef<any>();
   const textAreaRef = useRef<any>();
@@ -408,9 +405,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
             disabled={isDisabled}
           >
             {isLoading ? (
-              <SpinnerWrapper>
                 <Spinner size={24} isWhite={true} />
-              </SpinnerWrapper>
             ) : (
               <Typography variant="LargeTitleBold" color="white">
                 تایید و ادامه
