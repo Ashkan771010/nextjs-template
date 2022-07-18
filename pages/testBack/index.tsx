@@ -9,7 +9,7 @@ const TestBack = () => {
     useEffect(() => {
       router.beforePopState(({ as }) => {
         if (as !== router.asPath) {
-          router.push("/")
+          router.replace("/")
           return false;
         }
         return true;
