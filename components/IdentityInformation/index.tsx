@@ -1,0 +1,452 @@
+import React, { useState, useEffect, useRef, useContext } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useForm, Controller } from "react-hook-form";
+import * as Yup from "yup";
+
+import BottomSheetRoot from "../../components/shared/BottomSheet";
+
+import userInformationContext from "../../context/userInformation/userInformationContext";
+
+import {
+  Button,
+  Col,
+  NewTextField,
+  Row,
+  Select,
+  TextField,
+  Typography,
+} from "../../theme/ui-components";
+
+import {
+  IdentityInformationWrapper,
+  CTAButtonWrapper,
+  TextAreaWapper,
+  TextArea,
+  TextAreaLabel,
+  FormWrapper,
+  InputsWrapper,
+} from "./style";
+import {
+  BottomSheetBody,
+  BottomSheetInput,
+  BottomSheetInputWrapper,
+  BottomSheetItem,
+} from "../../components/FinancialInformation/style";
+import { FormInput } from "../../components/FormInput";
+import { SpinnerWrapper } from "../../components/shared/ProductCard/style";
+import Spinner from "../../components/shared/Spinner";
+import persianToEnglishNumber from "../../utils/convert-persian-to-english-number";
+
+const CHECKGUARANTEETYPESTEPDATA = [
+  { isComplete: true, isActive: false, textStep: "تسهیلات" },
+  { isComplete: false, isActive: true, textStep: "اطلاعات هویتی" },
+  { isComplete: false, isActive: false, textStep: "اطلاعات مالی" },
+  { isComplete: false, isActive: false, textStep: "پیش‌پرداخت" },
+];
+const CASHANDSIMGUARANTEETYPESTEPDATA = [
+  { isComplete: true, isActive: false, textStep: "شماره سیمکارت" },
+  { isComplete: false, isActive: true, textStep: "اطلاعات هویتی" },
+  { isComplete: false, isActive: false, textStep: "پیش‌پرداخت" },
+];
+
+interface IProps {
+  cities?: { id?: number; name: string }[];
+  provinces?: { id?: number; name: string }[];
+}
+
+interface IProvinceCity {
+  id?: number;
+  name?: string;
+}
+
+const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { handleSubmit, setValue, watch, control, formState } = useForm({
+    mode: "onChange",
+    // @ts-ignore
+    validationSchema: Yup.object({
+      firstName: Yup.string()
+        .required(),
+      lastName: Yup.string().required(),
+      fatherName: Yup.string().required(),
+      birthCertificateId: Yup.string().required(),
+      nationalCode: Yup.string().required().length(1),
+      postalCode: Yup.string().required().length(10),
+      address: Yup.string().required(),
+    }),
+  });
+
+  const router = useRouter();
+  const { guaranteeType = 0, simcardNumber } = router.query;
+
+  const { setUserInformation } = useContext<any>(userInformationContext);
+
+  const textAreaLabelRef = useRef<any>();
+  const textAreaRef = useRef<any>();
+
+  const [isShowProvincesBottomSheet, setIsShowProvincesBottomSheet] =
+    useState<boolean>(false);
+  const [isShowCitiesBottomSheet, setIsShowCitiesBottomSheet] =
+    useState<boolean>(false);
+  const [province, setProvince] = useState<IProvinceCity>({});
+  const [firstNameValidation, setFirstNameValidation] =
+    useState<boolean>(false);
+  const [provinceNameById, setProvinceNameById] = useState<IProvinceCity>();
+  const [provinceId, setProvinceId] = useState<number>();
+  const [city, setCity] = useState<IProvinceCity>({});
+  const [cityId, setCityId] = useState<number>();
+  const [cityNameById, setCityNameById] = useState<IProvinceCity>();
+  const [address, setAddress] = useState<string>("");
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
+
+  const handleTextAreaClick = () => {
+    textAreaLabelRef.current.style.top = "-12px";
+    textAreaLabelRef.current.style.right = "12px";
+    textAreaLabelRef.current.style.padding = "0 8px";
+    textAreaRef.current.focus();
+  };
+
+  const handleTextAreablur = () => {
+    if (watch("address")?.length !== 0) {
+      textAreaLabelRef.current.style.top = "-12px";
+    } else if (watch("address")?.length === 0) {
+      textAreaLabelRef.current.style.top = "12px";
+    }
+  };
+
+  // const handleSubmitForm = (data: any) => {
+  //   setIsLoading(true);
+  //   setUserInformation({
+  //     firstName: data.firstName,
+  //     lastName: data.lastName,
+  //     fatherName: data.fatherName,
+  //     birthCertificateId: data.birthCertificateId,
+  //     nationalCode: data.nationalCode,
+  //     province: province?.id,
+  //     city: province?.id,
+  //     postalCode: data.postalCode,
+  //     address: data.address,
+  //     simcardNumber: simcardNumber,
+  //   });
+  //   if (+guaranteeType === 0) {
+  //     router.push(`/buy/financial-Information?guaranteeType=${guaranteeType}`);
+  //   } else {
+  //     router.push(`/buy/before-payment?guaranteeType=${guaranteeType}`);
+  //   }
+  // };
+
+
+  useEffect(() => {
+    if (formState?.isValid) {
+      setIsDisabled(false);
+      return;
+    } else {
+      setIsDisabled(true);
+    }
+  }, [formState.isValid]);
+
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      localStorage.getItem("userInformation")
+    ) {
+      let storedValue: any = localStorage.getItem("userInformation");
+      if (storedValue) {
+        storedValue = JSON.parse(storedValue);
+        if (storedValue.province) {
+          setProvinceId(storedValue.province);
+        }
+        if (storedValue.city) {
+          setCityId(storedValue.city);
+        }
+        setValue("firstName", storedValue?.firstName);
+        setValue("lastName", storedValue?.lastName);
+        setValue("fatherName", storedValue?.fatherName);
+        setValue("birthCertificateId", storedValue?.birthCertificateId);
+        setValue("nationalCode", storedValue?.nationalCode);
+        setValue("postalCode", storedValue?.postalCode);
+        setValue("address", storedValue?.address);
+      }
+    }
+  }, [setValue]);
+
+
+  const handleChange = (e: any) => {
+    setValue("nationalCode", persianToEnglishNumber(String(e.target.value)))
+  }
+
+  return (
+    <IdentityInformationWrapper>
+      <Typography variant="BodyRegular" color="gray" className="mt-16">
+        مشخصات خود را وارد کنید
+      </Typography>
+      <FormWrapper>
+        <Row justifyContent="space-around" alignItems="start" className="mt-20">
+          <InputsWrapper>
+            <Controller
+              control={control}
+              name="firstName"
+              rules={{
+                required: "وارد کردن نام الزامی است",
+                pattern: {
+                  value: /^(?![a-zA-Z]+$)/,
+                  message: "فقط مجاز به استفاده از حروف فارسی هستید.",
+                },
+              }}
+              render={({
+                field: { onChange, onBlur, value },
+                fieldState: { invalid, error },
+                formState,
+              }) => {
+                return (
+                  <FormInput
+                    id="firstName"
+                    type="text"
+                    name="firstName"
+                    label="نام"
+                    onChange={onChange}
+                    error={error}
+                    onBlur={onBlur}
+                    selected={value}
+                    formState={formState}
+                    invalid={invalid}
+                  />
+                );
+              }}
+            />
+          </InputsWrapper>
+          <InputsWrapper>
+            <Controller
+              control={control}
+              name="lastName"
+              rules={{
+                required: "وارد کردن نام الزامی است",
+                pattern: {
+                  value: /^(?![a-zA-Z]+$)/,
+                  message: "فقط مجاز به استفاده از حروف فارسی هستید.",
+                },
+              }}
+              render={({
+                field: { onChange, onBlur, value },
+                fieldState: { invalid, error },
+                formState,
+              }) => {
+                return (
+                  <FormInput
+                    id="lastName"
+                    type="text"
+                    name="lastName"
+                    label="نام خانوادگی"
+                    onChange={onChange}
+                    error={error}
+                    onBlur={onBlur}
+                    selected={value}
+                    formState={formState}
+                    invalid={invalid}
+                  />
+                );
+              }}
+            />
+          </InputsWrapper>
+        </Row>
+        <Row justifyContent="space-around" alignItems="start" className="mt-36">
+          <InputsWrapper>
+            <Controller
+              control={control}
+              name="fatherName"
+              rules={{
+                required: "وارد کردن نام الزامی است",
+                pattern: {
+                  value: /^(?![a-zA-Z]+$)/,
+                  message: "فقط مجاز به استفاده از حروف فارسی هستید.",
+                },
+              }}
+              render={({
+                field: { onChange, onBlur, value },
+                fieldState: { invalid, error },
+                formState,
+              }) => {
+                return (
+                  <FormInput
+                    id="fatherName"
+                    type="text"
+                    name="fatherName"
+                    label="نام پدر"
+                    onChange={onChange}
+                    error={error}
+                    onBlur={onBlur}
+                    selected={value}
+                    formState={formState}
+                    invalid={invalid}
+                  />
+                );
+              }}
+            />
+          </InputsWrapper>
+          <InputsWrapper>
+            <Controller
+              control={control}
+              name="birthCertificateId"
+              rules={{
+                required: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
+                pattern: {
+                  value: /^([۰۱۲۳۴۵۶۷۸۹0-9])/,
+                  message: "",
+                },
+              }}
+              render={({
+                field: { onChange, onBlur, value },
+                fieldState: { invalid, error },
+                formState,
+              }) => {
+                return (
+                  <FormInput
+                    id="birthCertificateId"
+                    type="number"
+                    name="birthCertificateId"
+                    label="شماره شناسنامه"
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={error}
+                    selected={value}
+                    formState={formState}
+                    invalid={invalid}
+                    textAlign="left"
+                    direction="ltr"
+                    pattern="\d*"
+                  />
+                );
+              }}
+            />
+          </InputsWrapper>
+        </Row>
+        <Row
+          justifyContent="space-between"
+          alignItems="center"
+          className="mt-36"
+        >
+          <Controller
+            control={control}
+            name="nationalCode"
+            rules={{
+              required: "کد ملی را بصورت صحیح وارد کنید.",
+              maxLength: {
+                value: 10,
+                message: "تعداد کاراکترها بیش از حد مجاز است.",
+              },
+              minLength: {
+                value: 10,
+                message: "تعداد کاراکترها کمتر از حد مجاز است.",
+              },
+              pattern: {
+                value: /^([۰۱۲۳۴۵۶۷۸۹0-9])/,
+                message: "",
+              },
+            }}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { invalid, error },
+              formState,
+            }) => {
+              return (
+                <FormInput
+                  id="nationalCode"
+                  type="number"
+                  name="nationalCode"
+                  label="کد ملی"
+                  onChange={(e: any) => {
+                    onChange(e);
+                    handleChange(e);
+                  }}
+                  onBlur={onBlur}
+                  error={error}
+                  selected={value}
+                  formState={formState}
+                  invalid={invalid}
+                  textAlign="left"
+                  direction="ltr"
+                  fullWidth
+                  pattern="\d*"
+                />
+              );
+            }}
+          />
+        </Row>
+        <Row
+          // justifyContent="space-between"
+          // alignItems="center"
+          className="mt-36 mb-80"
+        >
+          <Controller
+            control={control}
+            name="postalCode"
+            rules={{
+              required: "کد پستی را بصورت صحیح وارد کنید.",
+              maxLength: {
+                value: 10,
+                message: "تعداد کاراکترها بیش از حد مجاز است.",
+              },
+              minLength: {
+                value: 10,
+                message: "تعداد کاراکترها کمتر از حد مجاز است.",
+              },
+              pattern: {
+                value: /^([۰۱۲۳۴۵۶۷۸۹0-9])/,
+                message: "",
+              },
+            }}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { invalid, error },
+              formState,
+            }) => {
+              return (
+                <FormInput
+                  id="postalCode"
+                  type="number"
+                  name="postalCode"
+                  label="کد پستی"
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  selected={value}
+                  error={error}
+                  formState={formState}
+                  invalid={invalid}
+                  textAlign="left"
+                  direction="ltr"
+                  fullWidth
+                  pattern="\d*"
+                />
+              );
+            }}
+          />
+        </Row>
+        <CTAButtonWrapper>
+          <Button
+            variant="contained"
+            fullWidth
+            height="48px"
+            _size="XXL"
+            color="primary"
+            // onClick={handleSubmitForm}
+            type="submit"
+            disabled={isDisabled}
+          >
+            {isLoading ? (
+              <SpinnerWrapper>
+                <Spinner size={24} isWhite={true} />
+              </SpinnerWrapper>
+            ) : (
+              <Typography variant="LargeTitleBold" color="white">
+                تایید و ادامه
+              </Typography>
+            )}
+          </Button>
+        </CTAButtonWrapper>
+      </FormWrapper>
+    </IdentityInformationWrapper>
+  );
+};
+
+export default IdentityInformation;
