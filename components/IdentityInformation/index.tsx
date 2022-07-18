@@ -262,8 +262,8 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               rules={{
                 required: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
                 pattern: {
-                  value: /^([۰۱۲۳۴۵۶۷۸۹0-9])/,
-                  message: "",
+                  value: /^([۰۱۲۳۴۵۶۷۸۹])/,
+                  message: "تستستسست",
                 },
               }}
               render={({
@@ -311,8 +311,8 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
               pattern: {
-                value: /^([۰۱۲۳۴۵۶۷۸۹0-9])/,
-                message: "",
+                value: /^([۰۱۲۳۴۵۶۷۸۹])/,
+                message: "تستستسست",
               },
             }}
             render={({
@@ -363,8 +363,8 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
               pattern: {
-                value: /^([۰۱۲۳۴۵۶۷۸۹0-9])/,
-                message: "",
+                value: /^([۰۱۲۳۴۵۶۷۸۹])/,
+                message: "تستستسست",
               },
             }}
             render={({
@@ -405,7 +405,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
             disabled={isDisabled}
           >
             {isLoading ? (
-                <Spinner size={24} isWhite={true} />
+              <Spinner size={24} isWhite={true} />
             ) : (
               <Typography variant="LargeTitleBold" color="white">
                 تایید و ادامه
