@@ -143,13 +143,11 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
   }, [setValue]);
 
 
-  useEffect(() => {
-    setValue(
-      "nationalCode",
-      persianToEnglishNumber(String(watch("nationalCode")))
-    );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch("nationalCode")])
+  const handleOnChnage = (e: any) => {
+    setValue("nationalCode", persianToEnglishNumber(e.target.value))
+  }
+
+  // console.log(watch("nationalCode"))
 
 
   return (
@@ -311,7 +309,6 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 value: 10,
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
-
             }}
             render={({
               field: { onChange, onBlur, value },
@@ -324,7 +321,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                   type="number"
                   name="nationalCode"
                   label="کد ملی"
-                  onChange={onChange}
+                  onChange={(e: any) => handleOnChnage(e)}
                   onBlur={onBlur}
                   error={error}
                   selected={value}
