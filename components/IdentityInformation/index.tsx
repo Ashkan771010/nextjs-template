@@ -143,9 +143,14 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
   }, [setValue]);
 
 
-  const handleChange = (e: any) => {
-    setValue("nationalCode", persianToEnglishNumber(String(e.target.value)))
-  }
+  useEffect(() => {
+    setValue(
+      "nationalCode",
+      persianToEnglishNumber(String(watch("nationalCode")))
+    );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("nationalCode")])
+
 
   return (
     <IdentityInformationWrapper>
@@ -261,10 +266,6 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               name="birthCertificateId"
               rules={{
                 required: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
-                pattern: {
-                  value: /^([۰۱۲۳۴۵۶۷۸۹])/,
-                  message: "تستستسست",
-                },
               }}
               render={({
                 field: { onChange, onBlur, value },
@@ -310,10 +311,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 value: 10,
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
-              pattern: {
-                value: /^([۰۱۲۳۴۵۶۷۸۹])/,
-                message: "تستستسست",
-              },
+
             }}
             render={({
               field: { onChange, onBlur, value },
@@ -326,10 +324,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                   type="number"
                   name="nationalCode"
                   label="کد ملی"
-                  onChange={(e: any) => {
-                    onChange(e);
-                    handleChange(e);
-                  }}
+                  onChange={onChange}
                   onBlur={onBlur}
                   error={error}
                   selected={value}
@@ -361,10 +356,6 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               minLength: {
                 value: 10,
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
-              },
-              pattern: {
-                value: /^([۰۱۲۳۴۵۶۷۸۹])/,
-                message: "تستستسست",
               },
             }}
             render={({
