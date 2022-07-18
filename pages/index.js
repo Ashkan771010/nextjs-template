@@ -30,7 +30,9 @@ export default function Home() {
       <input placeholder="number / tel" type="number" inputMode="tel" />
 
       <input placeholder="tel" type="tel" />
-      <Link href="/identity"> 22اطلاعات کاربر</Link>
+      <button onClick={() => {
+        router.replace("/identity")
+      }}>اطلاعات کاربر2323</button>
     </div>
   );
 }
