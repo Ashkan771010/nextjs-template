@@ -1,54 +1,28 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useForm, Controller } from "react-hook-form";
 import * as Yup from "yup";
 
-import BottomSheetRoot from "../../components/shared/BottomSheet";
 
 import userInformationContext from "../../context/userInformation/userInformationContext";
 
 import {
   Button,
-  Col,
-  NewTextField,
   Row,
-  Select,
-  TextField,
   Typography,
 } from "../../theme/ui-components";
 
 import {
   IdentityInformationWrapper,
   CTAButtonWrapper,
-  TextAreaWapper,
-  TextArea,
-  TextAreaLabel,
   FormWrapper,
   InputsWrapper,
 } from "./style";
-import {
-  BottomSheetBody,
-  BottomSheetInput,
-  BottomSheetInputWrapper,
-  BottomSheetItem,
-} from "../../components/FinancialInformation/style";
 import { FormInput } from "../../components/FormInput";
 import { SpinnerWrapper } from "../../components/shared/ProductCard/style";
 import Spinner from "../../components/shared/Spinner";
 import persianToEnglishNumber from "../../utils/convert-persian-to-english-number";
 
-const CHECKGUARANTEETYPESTEPDATA = [
-  { isComplete: true, isActive: false, textStep: "تسهیلات" },
-  { isComplete: false, isActive: true, textStep: "اطلاعات هویتی" },
-  { isComplete: false, isActive: false, textStep: "اطلاعات مالی" },
-  { isComplete: false, isActive: false, textStep: "پیش‌پرداخت" },
-];
-const CASHANDSIMGUARANTEETYPESTEPDATA = [
-  { isComplete: true, isActive: false, textStep: "شماره سیمکارت" },
-  { isComplete: false, isActive: true, textStep: "اطلاعات هویتی" },
-  { isComplete: false, isActive: false, textStep: "پیش‌پرداخت" },
-];
 
 interface IProps {
   cities?: { id?: number; name: string }[];
