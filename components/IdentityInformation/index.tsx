@@ -147,7 +147,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
     setValue("nationalCode", persianToEnglishNumber(e.target.value))
   }
 
-  // console.log(watch("nationalCode"))
+  
 
 
   return (
@@ -318,10 +318,13 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               return (
                 <FormInput
                   id="nationalCode"
-                  type="number"
+                  type="text"
                   name="nationalCode"
                   label="کد ملی"
-                  onChange={(e: any) => handleOnChnage(e)}
+                  onChange={(e: any) => {
+                    onChange(e);
+                    handleOnChnage(e);
+                  }}
                   onBlur={onBlur}
                   error={error}
                   selected={value}
