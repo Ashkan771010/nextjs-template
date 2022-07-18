@@ -318,7 +318,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               return (
                 <FormInput
                   id="nationalCode"
-                  type="text"
+                  type="number"
                   name="nationalCode"
                   label="کد ملی"
                   onChange={(e: any) => {
