@@ -277,7 +277,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               rules={{
                 required: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
                 pattern: {
-                  value: /^[0-9]*$/,
+                  value: /^[۰۱۲۳۴۵۶۷۸۹0-9]*$/,
                   message: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
                 },
               }}
@@ -329,7 +329,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
               pattern: {
-                value: /^[0-9]*$/,
+                value: /^[۰۱۲۳۴۵۶۷۸۹0-9]*$/,
                 message: "کد ملی را بصورت صحیح وارد کنید.",
               },
             }}
@@ -381,7 +381,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
               pattern: {
-                value: /^[0-9]*$/,
+                value: /^[۰۱۲۳۴۵۶۷۸۹0-9]*$/,
                 message: "کد پستی را بصورت صحیح وارد کنید.",
               },
             }}
