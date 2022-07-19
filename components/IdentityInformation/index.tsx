@@ -148,9 +148,9 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
     setNationalCode(persianToEnglishNumber(String(e.target.value)))
   }
 
+  console.log(nationalCode)
+
   
-
-
   return (
     <IdentityInformationWrapper>
       <Typography variant="BodyRegular" color="gray" className="mt-16">
