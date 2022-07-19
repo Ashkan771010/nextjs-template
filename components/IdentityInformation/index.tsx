@@ -299,7 +299,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
         >
           <FormInput
             id="nationalCode"
-            type="number"
+            type="tel"
             name="nationalCode"
             label="کد ملی"
             onChange={(e: any) => handleOnChnage(e)}
