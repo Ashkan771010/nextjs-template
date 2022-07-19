@@ -69,7 +69,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
   const [cityId, setCityId] = useState<number>();
   const [cityNameById, setCityNameById] = useState<IProvinceCity>();
   const [address, setAddress] = useState<string>("");
-  const [nationalCode, setNationalCode] = useState<string>("");
+  const [nationalCode, setNationalCode] = useState();
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleTextAreaClick = () => {
@@ -145,12 +145,23 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
 
 
   const handleOnChnage = (e: any) => {
-    setNationalCode(persianToEnglishNumber(String(e.target.value)))
+    setValue("nationalCode", persianToEnglishNumber(String(e.target.value)));
   }
 
-  console.log(nationalCode)
+  const handleBirth = (e: any) => {
+    setValue(
+      "birthCertificateId",
+      persianToEnglishNumber(String(e.target.value))
+    );
+  };
+
+  const handlepostal = (e: any) => {
+    setValue("postalCode", persianToEnglishNumber(String(e.target.value)));
+  };
 
   
+
+
   return (
     <IdentityInformationWrapper>
       <Typography variant="BodyRegular" color="gray" className="mt-16">
@@ -265,6 +276,10 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               name="birthCertificateId"
               rules={{
                 required: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
+                pattern: {
+                  value: /^[0-9]*$/,
+                  message: "شماره شناسنامه راه به صورت صحیح وارد نمایید",
+                },
               }}
               render={({
                 field: { onChange, onBlur, value },
@@ -274,10 +289,13 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 return (
                   <FormInput
                     id="birthCertificateId"
-                    type="number"
+                    type="tel"
                     name="birthCertificateId"
                     label="شماره شناسنامه"
-                    onChange={onChange}
+                    onChange={(e: any) => {
+                      onChange(e);
+                      handleBirth(e);
+                    }}
                     onBlur={onBlur}
                     error={error}
                     selected={value}
@@ -297,18 +315,51 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
           alignItems="center"
           className="mt-36"
         >
-          <FormInput
-            id="nationalCode"
-            type="tel"
+          <Controller
+            control={control}
             name="nationalCode"
-            label="کد ملی"
-            onChange={(e: any) => handleOnChnage(e)}
-            selected={nationalCode}
-            textAlign="left"
-            direction="ltr"
-            fullWidth
-            pattern="\d*"
-            lang="en"
+            rules={{
+              required: "کد ملی را بصورت صحیح وارد کنید.",
+              maxLength: {
+                value: 10,
+                message: "تعداد کاراکترها بیش از حد مجاز است.",
+              },
+              minLength: {
+                value: 10,
+                message: "تعداد کاراکترها کمتر از حد مجاز است.",
+              },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "کد ملی را بصورت صحیح وارد کنید.",
+              },
+            }}
+            render={({
+              field: { onChange, onBlur, value },
+              fieldState: { invalid, error },
+              formState,
+            }) => {
+              return (
+                <FormInput
+                  id="nationalCode"
+                  type="tel"
+                  name="nationalCode"
+                  label="کد ملی"
+                  onChange={(e: any) => {
+                    onChange(e);
+                    handleOnChnage(e);
+                  }}
+                  onBlur={onBlur}
+                  error={error}
+                  selected={value}
+                  formState={formState}
+                  invalid={invalid}
+                  textAlign="left"
+                  direction="ltr"
+                  fullWidth
+                  pattern="\d*"
+                />
+              );
+            }}
           />
         </Row>
         <Row
@@ -329,6 +380,10 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
                 value: 10,
                 message: "تعداد کاراکترها کمتر از حد مجاز است.",
               },
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "کد پستی را بصورت صحیح وارد کنید.",
+              },
             }}
             render={({
               field: { onChange, onBlur, value },
@@ -338,10 +393,13 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
               return (
                 <FormInput
                   id="postalCode"
-                  type="number"
+                  type="tel"
                   name="postalCode"
                   label="کد پستی"
-                  onChange={onChange}
+                  onChange={(e: any) => {
+                    onChange(e);
+                    handlepostal(e);
+                  }}
                   onBlur={onBlur}
                   selected={value}
                   error={error}
