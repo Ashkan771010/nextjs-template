@@ -69,6 +69,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
   const [cityId, setCityId] = useState<number>();
   const [cityNameById, setCityNameById] = useState<IProvinceCity>();
   const [address, setAddress] = useState<string>("");
+  const [nationalCode, setNationalCode] = useState<string>("");
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const handleTextAreaClick = () => {
@@ -144,7 +145,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
 
 
   const handleOnChnage = (e: any) => {
-    setValue("nationalCode", persianToEnglishNumber(String(e.target.value)));
+    setNationalCode(persianToEnglishNumber(String(e.target.value)))
   }
 
   
@@ -296,47 +297,17 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
           alignItems="center"
           className="mt-36"
         >
-          <Controller
-            control={control}
+          <FormInput
+            id="nationalCode"
+            type="number"
             name="nationalCode"
-            rules={{
-              required: "کد ملی را بصورت صحیح وارد کنید.",
-              maxLength: {
-                value: 10,
-                message: "تعداد کاراکترها بیش از حد مجاز است.",
-              },
-              minLength: {
-                value: 10,
-                message: "تعداد کاراکترها کمتر از حد مجاز است.",
-              },
-            }}
-            render={({
-              field: { onChange, onBlur, value },
-              fieldState: { invalid, error },
-              formState,
-            }) => {
-              return (
-                <FormInput
-                  id="nationalCode"
-                  type="number"
-                  name="nationalCode"
-                  label="کد ملی"
-                  onChange={(e: any) => {
-                    onChange(e);
-                    handleOnChnage(e);
-                  }}
-                  onBlur={onBlur}
-                  error={error}
-                  selected={value}
-                  formState={formState}
-                  invalid={invalid}
-                  textAlign="left"
-                  direction="ltr"
-                  fullWidth
-                  pattern="\d*"
-                />
-              );
-            }}
+            label="کد ملی"
+            onChange={(e: any) => handleOnChnage(e)}
+            selected={nationalCode}
+            textAlign="left"
+            direction="ltr"
+            fullWidth
+            pattern="\d*"
           />
         </Row>
         <Row
