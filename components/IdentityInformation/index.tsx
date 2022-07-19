@@ -144,7 +144,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
 
 
   const handleOnChnage = (e: any) => {
-    setValue("nationalCode", Number(persianToEnglishNumber(e.target.value)));
+    setValue("nationalCode", persianToEnglishNumber(String(e.target.value)));
   }
 
   

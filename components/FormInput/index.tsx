@@ -16,6 +16,7 @@ export const FormInput: React.FC<any> = props => {
     selected,
     formState,
     invalid,
+    customError,
     textAlign,
     direction,
     fullWidth,
@@ -36,19 +37,20 @@ export const FormInput: React.FC<any> = props => {
         fullWidth={fullWidth}
         pattern={pattern}
       />
-      {(error?.message) && (
-        <ErrorMessage fullWidth={fullWidth}>
-          <Image
-            src="/images/general/error.svg"
-            alt=""
-            width={16}
-            height={16}
-          />
-          <Typography variant="CaptionBold" color="red" className="mr-4 mt-4">
-            {error.message}
-          </Typography>
-        </ErrorMessage>
-      )}
+      {customError ||
+        (error?.message && (
+          <ErrorMessage fullWidth={fullWidth}>
+            <Image
+              src="/images/general/error.svg"
+              alt=""
+              width={16}
+              height={16}
+            />
+            <Typography variant="CaptionBold" color="red" className="mr-4 mt-4">
+              {error.message || customError}
+            </Typography>
+          </ErrorMessage>
+        ))}
     </Wrapper>
   );
 };
