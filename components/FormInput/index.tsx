@@ -21,6 +21,7 @@ export const FormInput: React.FC<any> = props => {
     direction,
     fullWidth,
     pattern,
+    lang
   } = props;
   return (
     <Wrapper>
@@ -36,6 +37,7 @@ export const FormInput: React.FC<any> = props => {
         direction={direction}
         fullWidth={fullWidth}
         pattern={pattern}
+        lang={lang}
       />
       {customError ||
         (error?.message && (

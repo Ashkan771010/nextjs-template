@@ -7,24 +7,17 @@ const arabicNumbers = ['٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩
  * @param value
  */
 const persianToEnglishNumber = (value: string) => {
-  if (value !== "string") return "";
-  var str = value.toString();
-  if (str === "") {
-    return ""
-  }else {
-    str = str.replace(/۰/g, "0");
-    str = str.replace(/۱/g, "1");
-    str = str.replace(/۲/g, "2");
-    str = str.replace(/۳/g, "3");
-    str = str.replace(/۴/g, "4");
-    str = str.replace(/۵/g, "5");
-    str = str.replace(/۶/g, "6");
-    str = str.replace(/۷/g, "7");
-    str = str.replace(/۸/g, "8");
-    str = str.replace(/۹/g, "9");
+  var pn = ["۰", "۱", "۲", "۳", "۴", "۵", "۶", "۷", "۸", "۹"];
+  var en = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+  var an = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
+  var cache = value;
+  for (var i = 0; i < 10; i++) {
+    var regex_fa = new RegExp(pn[i], "g");
+    var regex_ar = new RegExp(an[i], "g");
+    cache = cache.replace(regex_fa, en[i]);
+    cache = cache.replace(regex_ar, en[i]);
   }
-  
-  return str;
+  return cache;
 };
 
 export default persianToEnglishNumber;

@@ -308,6 +308,7 @@ const IdentityInformation: React.FC<IProps> = ({ cities, provinces }) => {
             direction="ltr"
             fullWidth
             pattern="\d*"
+            lang="en"
           />
         </Row>
         <Row

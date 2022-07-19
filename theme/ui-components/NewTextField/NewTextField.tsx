@@ -35,6 +35,7 @@ const TextFieldRoot: React.FC<any> = (props) => {
     handleCloseIcon,
     pattern,
     error,
+    lang
   } = props;
 
   const { isFocused, hasValue, eventHandlers } = useToggleOnFocus({
@@ -82,11 +83,11 @@ const TextFieldRoot: React.FC<any> = (props) => {
 
   return (
     <TextFieldWrapper fullWidth={fullWidth} width={width} className={className}>
-      <Label 
-      // @ts-ignore
-      focused={isFocused}
-      hasValue={hasValue || !!currentRef.current?.value}
-      onClick={handleOnLabelClick}
+      <Label
+        // @ts-ignore
+        focused={isFocused}
+        hasValue={hasValue || !!currentRef.current?.value}
+        onClick={handleOnLabelClick}
       >
         {label}
       </Label>
@@ -110,6 +111,7 @@ const TextFieldRoot: React.FC<any> = (props) => {
         placeholderColor={placeholderColor}
         autoFocus={false}
         pattern={pattern}
+        lang={lang}
       />
       <ErrorM>
         {error && (
